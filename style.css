@@ -1,14 +1,26 @@
+/* ===============================
+   BODY
+================================= */
+
 body {
   background: rgb(239, 239, 172);
-  font-family: lucida calligrahy;
+  font-family: "Lucida Calligraphy", cursive;
   text-align: center;
-  margin: 12px;
+  margin: 0;
   padding: 20px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
+
 body.dark {
   background: #121212;
-  color: #fff;
+  color: #ffffff;
 }
+
+
+/* ===============================
+   DARK MODE TOGGLE BUTTON
+================================= */
+
 .dark-toggle {
   position: fixed;
   top: 15px;
@@ -17,65 +29,132 @@ body.dark {
   border: none;
   cursor: pointer;
   border-radius: 50%;
+  background: #e91e62a4;
+  color: white;
+  font-size: 16px;
+  transition: 0.3s;
 }
+
+.dark-toggle:hover {
+  background: #e91e62;
+}
+
+
+/* ===============================
+   HEADINGS
+================================= */
+
 h1 {
   margin-bottom: 20px;
 }
+
+
+/* ===============================
+   RESPONSIVE GRID
+================================= */
+
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, mimax(160px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  width: 100%;
 }
+
+
+/* ===============================
+   BOXES (AUTO ADJUST TO TEXT)
+================================= */
+
 .box {
   background: rgb(249, 255, 140);
-  font-family: cursive;
   text-align: left;
-  width: auto;
-  margin: auto;
-  padding: 25px;
+  padding: 20px;
   border-radius: 15px;
-  transition: 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+  transition: transform 0.3s ease;
 }
+
+.box:hover {
+  transform: translateY(-5px);
+}
+
 .box2 {
   background: rgb(249, 255, 140);
-  font-family: cursive;
   text-align: center;
-  width: auto;
-  margin: auto;
-  padding: 25px;
+  padding: 20px;
   border-radius: 15px;
+  width: 100%;
+  box-sizing: border-box;
 }
+
+
+/* ===============================
+   CARD (AUTO HEIGHT BASED ON TEXT)
+================================= */
+
 .card {
   background: rgb(239, 239, 172);
   text-align: left;
   padding: 15px;
   border-radius: 18px;
+  width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
 }
+
+
+/* ===============================
+   BUTTON
+================================= */
+
 .btn {
   margin: 10px;
-  padding: 10px 12px;
+  padding: 10px 18px;
   border: none;
   background: #e91e62a4;
   color: white;
-  text-decoration: none;
   font-size: 15px;
   cursor: pointer;
   border-radius: 20px;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
-.dark-toggle {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 50%;
+
+.btn:hover {
+  background: #e91e62;
+  transform: scale(1.05);
 }
+
+
+/* ===============================
+   END SECTION
+================================= */
+
 .end {
   background: white;
   text-align: center;
-  width: 340px;
-  margin: auto;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
   padding: 25px;
   border-radius: 15px;
+  box-sizing: border-box;
+}
+
+
+/* ===============================
+   DARK MODE BOX ADJUSTMENTS
+================================= */
+
+body.dark .box,
+body.dark .box2 {
+  background: #1e1e1e;
+}
+
+body.dark .card {
+  background: #2a2a2a;
+}
+
+body.dark .end {
+  background: #1e1e1e;
 }
