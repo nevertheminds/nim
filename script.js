@@ -14,28 +14,24 @@ function toggleDarkMode() {
 let topZ = 1000;
 const board = document.getElementById("board-container");
 
+if (!board) {
+  console.warn("Board container not found!");
+}
+
 
 /* =================================
-   PHOTO SYSTEM (DRAG + FLIP + LIGHTBOX)
+   DRAG SYSTEM (WITH BOUNDARY LOCK)
 ================================= */
 
-document.querySelectorAll(".photo").forEach((photo) => {
+function makeDraggable(element) {
 
-  // Make photos draggable layout-ready
-  photo.style.position = "absolute";
-  photo.style.left = Math.random() * 400 + "px";
-  photo.style.top = Math.random() * 300 + "px";
-  photo.style.cursor = "grab";
-
-  let clickCount = 0;
-  let clickTimer = null;
   let isDragging = false;
   let hasMoved = false;
-  let startX, startY, offsetX, offsetY;
+  let offsetX, offsetY;
+  let startX, startY;
 
   const startDrag = (e) => {
     e.preventDefault();
-
     isDragging = true;
     hasMoved = false;
 
@@ -50,12 +46,14 @@ document.querySelectorAll(".photo").forEach((photo) => {
     startX = clientX;
     startY = clientY;
 
-    const rect = photo.getBoundingClientRect();
+    const rect = element.getBoundingClientRect();
+    const boardRect = board.getBoundingClientRect();
+
     offsetX = clientX - rect.left;
     offsetY = clientY - rect.top;
 
-    photo.style.zIndex = ++topZ;
-    photo.style.cursor = "grabbing";
+    element.style.zIndex = ++topZ;
+    element.style.cursor = "grabbing";
   };
 
   const moveDrag = (e) => {
@@ -77,17 +75,32 @@ document.querySelectorAll(".photo").forEach((photo) => {
       hasMoved = true;
     }
 
-    photo.style.left = clientX - offsetX + "px";
-    photo.style.top = clientY - offsetY + "px";
+    let newLeft = clientX - offsetX;
+    let newTop = clientY - offsetY;
+
+    /* ===== BOUNDARY LOCK ===== */
+    const boardRect = board.getBoundingClientRect();
+    const elRect = element.getBoundingClientRect();
+
+    const maxLeft = boardRect.width - elRect.width;
+    const maxTop = boardRect.height - elRect.height;
+
+    if (newLeft < 0) newLeft = 0;
+    if (newTop < 0) newTop = 0;
+    if (newLeft > maxLeft) newLeft = maxLeft;
+    if (newTop > maxTop) newTop = maxTop;
+
+    element.style.left = newLeft + "px";
+    element.style.top = newTop + "px";
   };
 
   const endDrag = () => {
     isDragging = false;
-    photo.style.cursor = "grab";
+    element.style.cursor = "grab";
   };
 
-  photo.addEventListener("mousedown", startDrag);
-  photo.addEventListener("touchstart", startDrag, { passive: false });
+  element.addEventListener("mousedown", startDrag);
+  element.addEventListener("touchstart", startDrag, { passive: false });
 
   window.addEventListener("mousemove", moveDrag);
   window.addEventListener("touchmove", moveDrag, { passive: false });
@@ -95,24 +108,46 @@ document.querySelectorAll(".photo").forEach((photo) => {
   window.addEventListener("mouseup", endDrag);
   window.addEventListener("touchend", endDrag);
 
+  return () => hasMoved; // used for click detection
+}
 
-  /* CLICK SYSTEM */
+
+/* =================================
+   PHOTO SYSTEM (DRAG + FLIP + LIGHTBOX)
+================================= */
+
+document.querySelectorAll(".photo").forEach((photo) => {
+
+  photo.style.position = "absolute";
+  photo.style.left = Math.random() * 400 + "px";
+  photo.style.top = Math.random() * 300 + "px";
+  photo.style.cursor = "grab";
+
+  const checkMoved = makeDraggable(photo);
+
+  let clickCount = 0;
+  let clickTimer = null;
 
   photo.addEventListener("click", () => {
-    if (hasMoved) return;
+
+    if (checkMoved()) return; // prevent click if dragged
 
     clickCount++;
 
     if (clickCount === 1) {
       clickTimer = setTimeout(() => {
-        if (clickCount === 1) {
-          const img = photo.querySelector("img");
-          if (img) {
-            document.getElementById("lightbox-img").src = img.src;
-            document.getElementById("lightbox").style.display = "flex";
-          }
+
+        const img = photo.querySelector("img");
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImg = document.getElementById("lightbox-img");
+
+        if (img && lightbox && lightboxImg) {
+          lightboxImg.src = img.src;
+          lightbox.style.display = "flex";
         }
+
         clickCount = 0;
+
       }, 250);
     }
 
@@ -144,76 +179,21 @@ if (lightbox) {
 ================================= */
 
 function spawnSticker(emoji, x, y) {
-  const s = document.createElement("div");
-  s.className = "draggable-sticker";
-  s.innerHTML = emoji;
+  if (!board) return;
 
-  s.style.left = x + "px";
-  s.style.top = y + "px";
-  s.style.position = "absolute";
-  s.style.zIndex = ++topZ;
+  const sticker = document.createElement("div");
+  sticker.className = "draggable-sticker";
+  sticker.innerHTML = emoji;
 
-  s.ondblclick = () => s.remove();
+  sticker.style.position = "absolute";
+  sticker.style.left = x + "px";
+  sticker.style.top = y + "px";
+  sticker.style.zIndex = ++topZ;
 
-  board.appendChild(s);
-  makeDraggable(s);
-}
+  sticker.ondblclick = () => sticker.remove();
 
-function makeDraggable(el) {
-
-  let p1 = 0, p2 = 0, p3 = 0, p4 = 0;
-
-  const dragStart = (e) => {
-    e.preventDefault();
-
-    el.style.zIndex = ++topZ;
-
-    const clientX = e.type.includes("touch")
-      ? e.touches[0].clientX
-      : e.clientX;
-
-    const clientY = e.type.includes("touch")
-      ? e.touches[0].clientY
-      : e.clientY;
-
-    p3 = clientX;
-    p4 = clientY;
-
-    document.onmousemove = dragMove;
-    document.ontouchmove = dragMove;
-
-    document.onmouseup = dragEnd;
-    document.ontouchend = dragEnd;
-  };
-
-  const dragMove = (e) => {
-    const clientX = e.type.includes("touch")
-      ? e.touches[0].clientX
-      : e.clientX;
-
-    const clientY = e.type.includes("touch")
-      ? e.touches[0].clientY
-      : e.clientY;
-
-    p1 = p3 - clientX;
-    p2 = p4 - clientY;
-
-    p3 = clientX;
-    p4 = clientY;
-
-    el.style.top = el.offsetTop - p2 + "px";
-    el.style.left = el.offsetLeft - p1 + "px";
-  };
-
-  const dragEnd = () => {
-    document.onmousemove = null;
-    document.ontouchmove = null;
-    document.onmouseup = null;
-    document.ontouchend = null;
-  };
-
-  el.onmousedown = dragStart;
-  el.ontouchstart = dragStart;
+  board.appendChild(sticker);
+  makeDraggable(sticker);
 }
 
 
@@ -247,7 +227,7 @@ function clearStickers() {
 
 /* LOAD ON START */
 
-window.onload = () => {
+window.addEventListener("load", () => {
   const savedData = localStorage.getItem("myBoardStickers");
 
   if (savedData) {
@@ -255,7 +235,7 @@ window.onload = () => {
       spawnSticker(s.emoji, s.x, s.y);
     });
   }
-};
+});
 
 
 /* =================================
@@ -270,7 +250,7 @@ if (emojiInput) {
       const val = e.target.value.trim();
 
       if (val) {
-        spawnSticker(val, 100, 100);
+        spawnSticker(val, 120, 120);
         e.target.value = "";
       }
     }
