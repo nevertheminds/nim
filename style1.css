@@ -6,6 +6,10 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   margin: 0;
   text-align: center;
@@ -27,12 +31,12 @@ body.dark {
 ================================ */
 
 .controls-bar {
-  position: fixed;        /* changed from sticky */
-  bottom: 0;              /* moved to bottom */
+  position: fixed;
+  bottom: 0;
   width: 100%;
   z-index: 2000;
   background: white;
-  padding: 15px;
+  padding: 12px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -50,9 +54,10 @@ body.dark .controls-bar {
 ================================ */
 
 #board-container {
-  position: relative;     /* important for absolute children */
+  position: relative;
   width: 100%;
-  height: calc(100vh - 120px); /* space for controls */
+  min-height: 100dvh; /* modern dynamic viewport */
+  padding-bottom: 100px; /* space for controls */
   background: #d8d890;
   overflow: hidden;
   transition: background 0.3s ease;
@@ -68,11 +73,12 @@ body.dark #board-container {
 ================================ */
 
 .photo {
-  position: absolute;     /* REQUIRED for drag */
-  width: clamp(160px, 22vw, 240px);
-  height: clamp(160px, 22vw, 240px);
+  position: absolute;
+  width: clamp(150px, 22vw, 240px);
+  height: clamp(150px, 22vw, 240px);
   perspective: 1000px;
   cursor: grab;
+  transition: transform 0.2s ease;
 }
 
 .photo:active {
@@ -91,7 +97,6 @@ body.dark #board-container {
   transition: transform 0.6s ease;
 }
 
-/* Both sides */
 .front,
 .back {
   position: absolute;
@@ -103,7 +108,6 @@ body.dark #board-container {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Image side */
 .front img {
   width: 100%;
   height: 100%;
@@ -111,7 +115,6 @@ body.dark #board-container {
   display: block;
 }
 
-/* Back side */
 .back {
   background: white;
   color: #430404de;
@@ -138,10 +141,7 @@ body.dark .back {
 
 #lightbox {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   display: none;
   justify-content: center;
   align-items: center;
@@ -153,7 +153,7 @@ body.dark .back {
 
 #lightbox-img {
   max-width: 95%;
-  max-height: 90%;
+  max-height: 95%;
   border-radius: 12px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
 }
@@ -171,6 +171,7 @@ body.dark .back {
   touch-action: none;
   user-select: none;
   filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+  transition: transform 0.15s ease;
 }
 
 
@@ -181,12 +182,34 @@ body.dark .back {
 @media (max-width: 768px) {
 
   .photo {
-    width: clamp(140px, 40vw, 200px);
-    height: clamp(140px, 40vw, 200px);
+    width: clamp(130px, 40vw, 200px);
+    height: clamp(130px, 40vw, 200px);
   }
 
   .back {
-    font-size: clamp(0.85rem, 3vw, 1rem);
+    font-size: clamp(0.8rem, 3vw, 1rem);
+  }
+
+  .controls-bar {
+    padding: 10px;
+    gap: 8px;
+  }
+}
+
+
+/* ================================
+   8. LANDSCAPE OPTIMIZATION
+================================ */
+
+@media (orientation: landscape) and (max-height: 500px) {
+
+  .photo {
+    width: clamp(110px, 18vw, 180px);
+    height: clamp(110px, 18vw, 180px);
+  }
+
+  .controls-bar {
+    padding: 8px;
   }
 
 }
