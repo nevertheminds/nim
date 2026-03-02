@@ -14,13 +14,9 @@ function toggleDarkMode() {
 let topZ = 1000;
 const board = document.getElementById("board-container");
 
-if (!board) {
-  console.warn("Board container not found!");
-}
-
 
 /* =================================
-   DRAG SYSTEM (WITH BOUNDARY LOCK)
+   UNIVERSAL DRAG SYSTEM
 ================================= */
 
 function makeDraggable(element) {
@@ -47,8 +43,6 @@ function makeDraggable(element) {
     startY = clientY;
 
     const rect = element.getBoundingClientRect();
-    const boardRect = board.getBoundingClientRect();
-
     offsetX = clientX - rect.left;
     offsetY = clientY - rect.top;
 
@@ -108,12 +102,12 @@ function makeDraggable(element) {
   window.addEventListener("mouseup", endDrag);
   window.addEventListener("touchend", endDrag);
 
-  return () => hasMoved; // used for click detection
+  return () => hasMoved;
 }
 
 
 /* =================================
-   PHOTO SYSTEM (DRAG + FLIP + LIGHTBOX)
+   PHOTO SYSTEM
 ================================= */
 
 document.querySelectorAll(".photo").forEach((photo) => {
@@ -125,18 +119,23 @@ document.querySelectorAll(".photo").forEach((photo) => {
 
   const checkMoved = makeDraggable(photo);
 
-  let clickCount = 0;
-  let clickTimer = null;
+  let tapTimeout = null;
+  let lastTapTime = 0;
 
-  photo.addEventListener("click", () => {
+  const handleTap = () => {
 
-    if (checkMoved()) return; // prevent click if dragged
+    if (checkMoved()) return;
 
-    clickCount++;
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTapTime;
 
-    if (clickCount === 1) {
-      clickTimer = setTimeout(() => {
-
+    if (tapLength < 300 && tapLength > 0) {
+      // DOUBLE TAP → FLIP
+      clearTimeout(tapTimeout);
+      photo.classList.toggle("flipped");
+    } else {
+      // SINGLE TAP → LIGHTBOX
+      tapTimeout = setTimeout(() => {
         const img = photo.querySelector("img");
         const lightbox = document.getElementById("lightbox");
         const lightboxImg = document.getElementById("lightbox-img");
@@ -145,19 +144,14 @@ document.querySelectorAll(".photo").forEach((photo) => {
           lightboxImg.src = img.src;
           lightbox.style.display = "flex";
         }
-
-        clickCount = 0;
-
-      }, 250);
+      }, 300);
     }
 
-    else if (clickCount === 2) {
-      clearTimeout(clickTimer);
-      photo.classList.toggle("flipped");
-      clickCount = 0;
-    }
-  });
+    lastTapTime = currentTime;
+  };
 
+  photo.addEventListener("mouseup", handleTap);
+  photo.addEventListener("touchend", handleTap);
 });
 
 
@@ -179,6 +173,7 @@ if (lightbox) {
 ================================= */
 
 function spawnSticker(emoji, x, y) {
+
   if (!board) return;
 
   const sticker = document.createElement("div");
@@ -198,10 +193,11 @@ function spawnSticker(emoji, x, y) {
 
 
 /* =================================
-   SAVE / LOAD SYSTEM
+   SAVE / LOAD
 ================================= */
 
 function saveBoard() {
+
   const stickers = document.querySelectorAll(".draggable-sticker");
   const data = [];
 
@@ -218,16 +214,15 @@ function saveBoard() {
 }
 
 function clearStickers() {
+
   document.querySelectorAll(".draggable-sticker")
     .forEach((s) => s.remove());
 
   localStorage.removeItem("myBoardStickers");
 }
 
-
-/* LOAD ON START */
-
 window.addEventListener("load", () => {
+
   const savedData = localStorage.getItem("myBoardStickers");
 
   if (savedData) {
@@ -247,6 +242,7 @@ const emojiInput = document.getElementById("emojiInput");
 if (emojiInput) {
   emojiInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
+
       const val = e.target.value.trim();
 
       if (val) {
