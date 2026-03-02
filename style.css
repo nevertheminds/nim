@@ -41,6 +41,124 @@ body.dark {
 
 
 /* ===============================
+   CONTAINER BOX
+================================= */
+
+.box2 {
+  background: rgb(249, 255, 140);
+  padding: 25px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  box-sizing: border-box;
+  transition: 0.3s;
+}
+
+body.dark .box2 {
+  background: #1e1e1e;
+}
+
+
+/* ===============================
+   RESPONSIVE TITLES
+================================= */
+
+.main-title {
+  font-size: clamp(24px, 5vw, 40px);
+  margin-bottom: 10px;
+}
+
+.sub-title {
+  font-size: clamp(18px, 3vw, 24px);
+  margin-bottom: 20px;
+}
+
+
+/* ===============================
+   LETTER CARD
+================================= */
+
+.card {
+  background: rgb(239, 239, 172);
+  padding: 20px;
+  border-radius: 18px;
+  text-align: left;
+  max-width: 700px;
+  margin: auto;
+  box-sizing: border-box;
+  transition: 0.3s;
+}
+
+body.dark .card {
+  background: #2a2a2a;
+}
+
+/* Paragraph Styling */
+.letter p {
+  font-size: clamp(14px, 2.5vw, 18px);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+
+/* ===============================
+   BUTTONS
+================================= */
+
+.btn {
+  margin: 10px;
+  padding: 10px 18px;
+  border: none;
+  background: #e91e62a4;
+  color: white;
+  font-size: clamp(14px, 2vw, 16px);
+  cursor: pointer;
+  border-radius: 20px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  background: #e91e62;
+  transform: scale(1.05);
+}
+
+
+/* ===============================
+   HIDDEN MESSAGE AREA
+================================= */
+
+#hidden {
+  font-size: clamp(14px, 2.5vw, 18px);
+  margin-top: 10px;
+}
+
+
+/* ===============================
+   SMALL SCREEN IMPROVEMENTS
+================================= */
+
+@media (max-width: 480px) {
+
+  body {
+    padding: 15px;
+  }
+
+  .box2 {
+    padding: 18px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+}
+.dark-toggle:hover {
+  background: #e91e62;
+}
+
+
+/* ===============================
    HEADINGS
 ================================= */
 
@@ -158,3 +276,4 @@ body.dark .card {
 body.dark .end {
   background: #1e1e1e;
 }
+
