@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Board</title>
+    <link rel="stylesheet" href="style1.css" />
+  </head>
+  <body>
+    <button class="dark-toggle" onclick="toggleDarkMode()">🌗</button>
+
+    <h1 class="title">You Board</h1>
+    <p>Arrange it as you like</p>
+    <div class="board">
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="IMG_20250323_211824_517.jpg" /></div>
+          <div class="back">Your art, you drew us 😋😝✨</div>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="Snapchat-1040781069.jpg" /></div>
+          <div class="back">Shawty got glasses 😍😋✨</div>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="Snapchat-1110546818.jpg" /></div>
+          <div class="back">Cat from Spidey-cat 😍😍✨✨</div>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="Snapchat-1133445595.jpg" /></div>
+          <div class="back">Asianic Beauty 😋🫠🫶🏼✨</div>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="Snapchat-885816489.jpg" /></div>
+          <div class="back"></div>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="Snapchat-1185552381.jpg" /></div>
+          <div class="back">Hottie in hoodie, hot in hot during cold 🥺</div>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="Snapchat-1534954429.jpg" /></div>
+          <div class="back">Who's this Diva?😍😍</div>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="Snapchat-1735070336.jpg" /></div>
+          <div class="back">Glow from the stars✨✨</div>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="Snapchat-259496591.jpg" /></div>
+          <div class="back">Cool Kids!!😋😋</div>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="Snapchat-374933353.jpg" /></div>
+          <div class="back">
+            Worth keeping in the wallet(ain't doing it though)
+          </div>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="Snapchat-998970430.jpg" /></div>
+          <div class="back"></div>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="Snapchat-621616068.jpg" /></div>
+          <div class="back">Shawty stealing all the focus 😝😝✨</div>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="Snapchat-857346060.jpg" /></div>
+          <div class="back">Sun kissed😍😍</div>
+        </div>
+      </div>
+      <div class="photo">
+        <div class="card">
+          <div class="front"><img src="Snapchat-867171473.jpg" /></div>
+          <div class="back">The real pookie 😋😋</div>
+        </div>
+      </div>
+
+      <div id="lightbox" class="lightbox">
+        <img id="lightbox-img" />
+      </div>
+    </div>
+    <input
+      type="text"
+      id="emojiInput"
+      placeholder="Type emoji & hit Enter..."
+      maxlength="5" />
+    <button onclick="saveBoard()" class="btn-save">💾 Save Board</button>
+    <button onclick="clearStickers()" class="btn-clear">🗑️ Clear All</button>
+    <script src="script.js"></script>
+  </body>
+</html>

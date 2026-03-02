@@ -1,0 +1,81 @@
+body {
+  background: rgb(239, 239, 172);
+  font-family: lucida calligrahy;
+  text-align: center;
+  margin: 12px;
+  padding: 20px;
+}
+body.dark {
+  background: #121212;
+  color: #fff;
+}
+.dark-toggle {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+h1 {
+  margin-bottom: 20px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, mimax(160px, 1fr));
+  gap: 15px;
+}
+.box {
+  background: rgb(249, 255, 140);
+  font-family: cursive;
+  text-align: left;
+  width: auto;
+  margin: auto;
+  padding: 25px;
+  border-radius: 15px;
+  transition: 0.3s;
+}
+.box2 {
+  background: rgb(249, 255, 140);
+  font-family: cursive;
+  text-align: center;
+  width: auto;
+  margin: auto;
+  padding: 25px;
+  border-radius: 15px;
+}
+.card {
+  background: rgb(239, 239, 172);
+  text-align: left;
+  padding: 15px;
+  border-radius: 18px;
+}
+.btn {
+  margin: 10px;
+  padding: 10px 12px;
+  border: none;
+  background: #e91e62a4;
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 20px;
+}
+.dark-toggle {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.end {
+  background: white;
+  text-align: center;
+  width: 340px;
+  margin: auto;
+  padding: 25px;
+  border-radius: 15px;
+}
