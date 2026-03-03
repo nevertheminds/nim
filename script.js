@@ -1,24 +1,19 @@
 /* =================================
    DARK MODE
 ================================= */
-
 function toggleDarkMode() {
   document.body.classList.toggle("dark");
 }
 
-
 /* =================================
    GLOBAL STATE
 ================================= */
-
 let topZ = 1000;
 const board = document.getElementById("board-container");
 
-
 /* =================================
-   UNIVERSAL DRAG SYSTEM
+   UNIVERSAL DRAG SYSTEM (PHONE SAFE)
 ================================= */
-
 function makeDraggable(element) {
 
   let isDragging = false;
@@ -69,20 +64,16 @@ function makeDraggable(element) {
       hasMoved = true;
     }
 
-    let newLeft = clientX - offsetX;
-    let newTop = clientY - offsetY;
-
-    /* ===== BOUNDARY LOCK ===== */
     const boardRect = board.getBoundingClientRect();
-    const elRect = element.getBoundingClientRect();
 
-    const maxLeft = boardRect.width - elRect.width;
-    const maxTop = boardRect.height - elRect.height;
+    let newLeft = clientX - boardRect.left - offsetX;
+    let newTop = clientY - boardRect.top - offsetY;
 
-    if (newLeft < 0) newLeft = 0;
-    if (newTop < 0) newTop = 0;
-    if (newLeft > maxLeft) newLeft = maxLeft;
-    if (newTop > maxTop) newTop = maxTop;
+    const maxLeft = board.scrollWidth - element.offsetWidth;
+    const maxTop = board.scrollHeight - element.offsetHeight;
+
+    newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+    newTop = Math.max(0, Math.min(newTop, maxTop));
 
     element.style.left = newLeft + "px";
     element.style.top = newTop + "px";
@@ -105,16 +96,20 @@ function makeDraggable(element) {
   return () => hasMoved;
 }
 
-
 /* =================================
-   PHOTO SYSTEM
+   PHOTO SYSTEM (SCRAPBOOK STYLE)
 ================================= */
-
 document.querySelectorAll(".photo").forEach((photo) => {
 
   photo.style.position = "absolute";
-  photo.style.left = Math.random() * 400 + "px";
-  photo.style.top = Math.random() * 300 + "px";
+
+  // Random placement across full board
+  photo.style.left = Math.random() * (board.offsetWidth - 200) + "px";
+  photo.style.top = Math.random() * (board.offsetHeight - 250) + "px";
+
+  // Slight random rotation
+  photo.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+
   photo.style.cursor = "grab";
 
   const checkMoved = makeDraggable(photo);
@@ -130,11 +125,9 @@ document.querySelectorAll(".photo").forEach((photo) => {
     const tapLength = currentTime - lastTapTime;
 
     if (tapLength < 300 && tapLength > 0) {
-      // DOUBLE TAP → FLIP
       clearTimeout(tapTimeout);
       photo.classList.toggle("flipped");
     } else {
-      // SINGLE TAP → LIGHTBOX
       tapTimeout = setTimeout(() => {
         const img = photo.querySelector("img");
         const lightbox = document.getElementById("lightbox");
@@ -154,11 +147,9 @@ document.querySelectorAll(".photo").forEach((photo) => {
   photo.addEventListener("touchend", handleTap);
 });
 
-
 /* =================================
    LIGHTBOX CLOSE
 ================================= */
-
 const lightbox = document.getElementById("lightbox");
 
 if (lightbox) {
@@ -167,14 +158,10 @@ if (lightbox) {
   });
 }
 
-
 /* =================================
-   STICKERS
+   STICKER SYSTEM (CLICK ANYWHERE)
 ================================= */
-
 function spawnSticker(emoji, x, y) {
-
-  if (!board) return;
 
   const sticker = document.createElement("div");
   sticker.className = "draggable-sticker";
@@ -191,11 +178,37 @@ function spawnSticker(emoji, x, y) {
   makeDraggable(sticker);
 }
 
+/* ===== CLICK TO PLACE EMOJI ===== */
+let currentEmoji = "";
+
+const emojiInput = document.getElementById("emojiInput");
+
+if (emojiInput) {
+  emojiInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && e.target.value.trim()) {
+      currentEmoji = e.target.value.trim();
+      e.target.value = "";
+    }
+  });
+}
+
+board.addEventListener("click", (e) => {
+
+  if (!currentEmoji) return;
+
+  if (e.target.closest(".photo")) return;
+
+  const boardRect = board.getBoundingClientRect();
+
+  const x = e.clientX - boardRect.left;
+  const y = e.clientY - boardRect.top;
+
+  spawnSticker(currentEmoji, x, y);
+});
 
 /* =================================
    SAVE / LOAD
 ================================= */
-
 function saveBoard() {
 
   const stickers = document.querySelectorAll(".draggable-sticker");
@@ -231,24 +244,3 @@ window.addEventListener("load", () => {
     });
   }
 });
-
-
-/* =================================
-   EMOJI INPUT
-================================= */
-
-const emojiInput = document.getElementById("emojiInput");
-
-if (emojiInput) {
-  emojiInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-
-      const val = e.target.value.trim();
-
-      if (val) {
-        spawnSticker(val, 120, 120);
-        e.target.value = "";
-      }
-    }
-  });
-}
