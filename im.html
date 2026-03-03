@@ -13,14 +13,15 @@
   <!-- Dark Mode Toggle -->
   <button class="dark-toggle" onclick="toggleDarkMode()">🌗</button>
 
-  <h1 class="title">Your Board</h1>
-  <p style="text-align:center;">Arrange it as you like</p>
-  <p>Click the  images to view, double click to flip, drag and place it like you want to</p>
+  <h1 class="title">You Board</h1>
+  <p class="subtitle">
+    Tap to view • Double tap to flip • Drag to arrange • Add emojis anywhere
+  </p>
 
-  <!-- ================= BOARD ================= -->
+  <!-- ================= SCRAPBOOK BOARD ================= -->
   <div id="board-container">
 
-    <!-- 1 -->
+    <!-- Memory 1 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -30,7 +31,7 @@
       </div>
     </div>
 
-    <!-- 2 -->
+    <!-- Memory 2 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -40,7 +41,7 @@
       </div>
     </div>
 
-    <!-- 3 -->
+    <!-- Memory 3 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -50,7 +51,7 @@
       </div>
     </div>
 
-    <!-- 4 -->
+    <!-- Memory 4 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -60,7 +61,7 @@
       </div>
     </div>
 
-    <!-- 5 -->
+    <!-- Memory 5 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -70,7 +71,7 @@
       </div>
     </div>
 
-    <!-- 6 -->
+    <!-- Memory 6 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -80,7 +81,7 @@
       </div>
     </div>
 
-    <!-- 7 -->
+    <!-- Memory 7 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -90,7 +91,7 @@
       </div>
     </div>
 
-    <!-- 8 -->
+    <!-- Memory 8 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -100,7 +101,7 @@
       </div>
     </div>
 
-    <!-- 9 -->
+    <!-- Memory 9 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -110,7 +111,7 @@
       </div>
     </div>
 
-    <!-- 10 -->
+    <!-- Memory 10 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -122,7 +123,7 @@
       </div>
     </div>
 
-    <!-- 11 -->
+    <!-- Memory 11 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -132,7 +133,7 @@
       </div>
     </div>
 
-    <!-- 12 -->
+    <!-- Memory 12 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -142,7 +143,7 @@
       </div>
     </div>
 
-    <!-- 13 -->
+    <!-- Memory 13 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -152,7 +153,7 @@
       </div>
     </div>
 
-    <!-- 14 -->
+    <!-- Memory 14 -->
     <div class="photo">
       <div class="card">
         <div class="front">
@@ -172,7 +173,7 @@
   </div>
 
 
-  <!-- Controls -->
+  <!-- Controls Bar -->
   <div class="controls-bar">
     <input
       type="text"
@@ -180,28 +181,13 @@
       placeholder="Type emoji & hit Enter..."
       maxlength="5"
     />
-    <button onclick="saveBoard()" class="btn-save">💾 Save Board</button>
-    <button onclick="clearStickers()" class="btn-clear">🗑️ Clear All</button>
+    <button onclick="saveBoard()">💾 Save</button>
+    <button onclick="clearStickers()">🗑 Clear</button>
   </div>
 
 
+  <!-- Script -->
   <script src="script.js" defer></script>
-  <!-- Lightbox -->
-  <div id="lightbox">
-    <img id="lightbox-img" alt="Preview Image">
-  </div>
-
-
-  <!-- Controls -->
-  <div class="controls-bar">
-    <button onclick="saveBoard()" class="btn-save">💾 Save Board</button>
-    <button onclick="clearStickers()" class="btn-clear">🗑️ Clear All</button>
-  </div>
-
-
-  <script src="script.js"></script>
 
 </body>
 </html>
-
-
