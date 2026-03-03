@@ -244,3 +244,50 @@ window.addEventListener("load", () => {
     });
   }
 });
+/* =================================
+   SMART AUTO RE-LAYOUT (SAFE)
+================================= */
+
+function correctOverflow(element) {
+
+  const maxLeft = board.scrollWidth - element.offsetWidth;
+  const maxTop = board.scrollHeight - element.offsetHeight;
+
+  let currentLeft = element.offsetLeft;
+  let currentTop = element.offsetTop;
+
+  // Correct horizontal overflow
+  if (currentLeft > maxLeft) {
+    element.style.left = maxLeft + "px";
+  }
+
+  if (currentLeft < 0) {
+    element.style.left = "0px";
+  }
+
+  // Correct vertical overflow
+  if (currentTop > maxTop) {
+    element.style.top = maxTop + "px";
+  }
+
+  if (currentTop < 0) {
+    element.style.top = "0px";
+  }
+}
+
+function autoRelayout() {
+
+  // Fix photos
+  document.querySelectorAll(".photo").forEach((photo) => {
+    correctOverflow(photo);
+  });
+
+  // Fix stickers
+  document.querySelectorAll(".draggable-sticker").forEach((sticker) => {
+    correctOverflow(sticker);
+  });
+}
+
+/* Trigger on resize and orientation change */
+window.addEventListener("resize", autoRelayout);
+window.addEventListener("orientationchange", autoRelayout);
