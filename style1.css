@@ -14,10 +14,17 @@ body {
   margin: 0;
   text-align: center;
   font-family: "Comic Sans MS", "Comic Sans", cursive;
-  background: #f4f4f4;
   color: #222;
   transition: background 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
+
+  /* 🟤 Corkboard texture background */
+  background-color: #c49a6c;
+  background-image:
+    radial-gradient(#b5835a 1px, transparent 1px),
+    radial-gradient(#b5835a 1px, transparent 1px);
+  background-size: 18px 18px;
+  background-position: 0 0, 9px 9px;
 }
 
 body.dark {
@@ -34,18 +41,19 @@ body.dark {
   position: fixed;
   bottom: 0;
   width: 100%;
-  z-index: 2000;
-  background: white;
+  z-index: 6000;
+  background: rgba(255, 255, 255, 0.95);
   padding: 12px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(5px);
 }
 
 body.dark .controls-bar {
-  background: #333;
+  background: rgba(40, 40, 40, 0.95);
 }
 
 
@@ -56,10 +64,9 @@ body.dark .controls-bar {
 #board-container {
   position: relative;
   width: 100%;
-  min-height: 100dvh; /* modern dynamic viewport */
-  padding-bottom: 100px; /* space for controls */
-  background: #d8d890;
-  overflow: hidden;
+  min-height: 150vh; /* allows vertical scrapbook scroll */
+  padding-bottom: 120px; /* space for controls */
+  overflow-y: auto;
   transition: background 0.3s ease;
 }
 
@@ -79,6 +86,11 @@ body.dark #board-container {
   perspective: 1000px;
   cursor: grab;
   transition: transform 0.2s ease;
+}
+
+/* Random scrapbook rotation look */
+.photo {
+  transform: rotate(var(--rotation, 0deg));
 }
 
 .photo:active {
@@ -105,7 +117,38 @@ body.dark #board-container {
   border-radius: 15px;
   overflow: hidden;
   backface-visibility: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  background: white;
+}
+
+/* 📌 Push Pin Effect */
+.photo::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 30% 30%, #ff6b6b, #a30000);
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+  z-index: 5;
+}
+
+/* 🩹 Tape Overlay Effect */
+.photo::after {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: 20%;
+  width: 60%;
+  height: 25px;
+  background: rgba(255,255,255,0.6);
+  transform: rotate(-5deg);
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 4;
 }
 
 .front img {
@@ -160,18 +203,22 @@ body.dark .back {
 
 
 /* ================================
-   6. DRAGGABLE STICKERS
+   6. DRAGGABLE STICKERS (EMOJIS)
 ================================ */
 
 .draggable-sticker {
   position: absolute;
   font-size: clamp(2rem, 5vw, 3.5rem);
   cursor: grab;
-  z-index: 1000;
+  z-index: 5000; /* above photos */
   touch-action: none;
   user-select: none;
-  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.3));
   transition: transform 0.15s ease;
+}
+
+.draggable-sticker:active {
+  cursor: grabbing;
 }
 
 
@@ -194,6 +241,7 @@ body.dark .back {
     padding: 10px;
     gap: 8px;
   }
+
 }
 
 
